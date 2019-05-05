@@ -4,7 +4,7 @@ package com.fcb.community.dto;
  * Created by hank on 19-5-5
  */
 public class GithubUser {
-    private Long  id;
+    private Long id;
     private String name;
     private String bio;
 
@@ -30,5 +30,14 @@ public class GithubUser {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    @Override
+    public String toString() {
+        return "GithubUser{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", bio='" + bio + '\'' +
+                '}';
     }
 }
