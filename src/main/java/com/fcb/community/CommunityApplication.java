@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CommunityApplication {
 
     public static void main(String[] args) {
+        //可以完全关闭重启支持
+        //System.setProperty("spring.devtools.restart.enabled", "false");
+
         SpringApplication.run(CommunityApplication.class, args);
     }
 

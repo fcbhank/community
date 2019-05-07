@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class IndexController {
     @Autowired
-    private UserMapper usermapper;
+    private UserMapper userMapper;
 
     @RequestMapping("/")
     public String index(HttpServletRequest request) {
@@ -24,7 +24,7 @@ public class IndexController {
             for (Cookie cookie : cookies) {
                 if ("token".equals(cookie.getName())) {
                     String token = cookie.getValue();
-                    User user = usermapper.findByToken(token);
+                    User user = userMapper.findByToken(token);
                     if (user != null) {
                         request.getSession().setAttribute("user", user);
                     }
