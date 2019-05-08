@@ -2,7 +2,7 @@ package com.fcb.community.provider;
 
 import com.alibaba.fastjson.JSON;
 import com.fcb.community.dto.AccessTokenDto;
-import com.fcb.community.dto.GithubUser;
+import com.fcb.community.dto.GithubUserDto;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +31,7 @@ public class GithubProvider {
         return null;
     }
 
-    public GithubUser getUser(String accessToken) {
+    public GithubUserDto getUser(String accessToken) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("https://api.github.com/user?access_token=" + accessToken)
@@ -39,8 +39,8 @@ public class GithubProvider {
         try {
             Response response = client.newCall(request).execute();
             String string = response.body().string();
-            GithubUser githubUser = JSON.parseObject(string, GithubUser.class);
-            return githubUser;
+            GithubUserDto githubUserDto = JSON.parseObject(string, GithubUserDto.class);
+            return githubUserDto;
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,7 @@
 package com.fcb.community.controller;
 
 import com.fcb.community.dto.AccessTokenDto;
-import com.fcb.community.dto.GithubUser;
+import com.fcb.community.dto.GithubUserDto;
 import com.fcb.community.mapper.UserMapper;
 import com.fcb.community.model.User;
 import com.fcb.community.provider.GithubProvider;
@@ -47,18 +47,18 @@ public class AuthorizeController {
         accessTokenDto.setState(state);
 
         String accessToken = githubProvider.getAccessToken(accessTokenDto);
-        GithubUser githubUser = githubProvider.getUser(accessToken);
+        GithubUserDto githubUserDto = githubProvider.getUser(accessToken);
 
-        if (githubUser != null) {
+        if (githubUserDto != null) {
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-            user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setName(githubUser.getName());
+            user.setAccountId(String.valueOf(githubUserDto.getId()));
+            user.setName(githubUserDto.getName());
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
-            user.setAvatarUrl(githubUser.getAvatarUrl());
-            user.setBio(githubUser.getBio());
+            user.setAvatarUrl(githubUserDto.getAvatarUrl());
+            user.setBio(githubUserDto.getBio());
 
             userMapper.insert(user);
             // 手动把token写入cookie中

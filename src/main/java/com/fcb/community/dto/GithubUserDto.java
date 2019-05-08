@@ -6,7 +6,7 @@ import lombok.Data;
  * Created by hank on 19-5-5
  */
 @Data
-public class GithubUser {
+public class GithubUserDto {
     private Long id;
     private String name;
     private String bio;
