@@ -5,6 +5,7 @@ import com.fcb.community.mapper.UserMapper;
 import com.fcb.community.model.User;
 import com.fcb.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,9 @@ public class IndexController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private Environment environment;
 
     @RequestMapping("/")
     public String index(HttpServletRequest request,
@@ -43,6 +47,11 @@ public class IndexController {
         // 获取数据库中已发布问题的list
         List<QuestionDto> questionDtos = questionService.list();
         model.addAttribute("questionDtos", questionDtos);
+        // 设置登录跳转地址中的常量
+        model.addAttribute("clientId", environment.getProperty("github.client.id"));
+        model.addAttribute("redirectUri", environment.getProperty("github.redirect.uri"));
+        model.addAttribute("scope", "user");
+        model.addAttribute("state", 1);
         return "index";
 
     }

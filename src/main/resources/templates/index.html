@@ -46,8 +46,10 @@
                         <li><a href="#">退出登录</a></li>
                     </ul>
                 </li>
-                <li th:if="${session.user==null}"><a
-                        href="https://github.com/login/oauth/authorize?client_id=325b2ee6c4c797aa87c6&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a>
+                <li th:if="${session.user==null}">
+                    <a th:href="@{https://github.com/login/oauth/authorize(client_id=${clientId},redirect_uri=${redirectUri},scope=${scope},state=${state})}">
+                        登录
+                    </a>
                 </li>
             </ul>
         </div>
@@ -72,7 +74,8 @@
                     <h4 class="media-heading" th:text="${qDto.title}"></h4>
                     <span th:text="${qDto.description}"></span><br/>
                     <span class="text-desc"><span th:text="${qDto.commentCount}"></span>个回复·<span
-                            th:text="${qDto.viewCount}"></span>次浏览·<span th:text="${#calendars.format(qDto.gmtModified,'yyyy-MM-dd HH:mm')}"></span></span>
+                            th:text="${qDto.viewCount}"></span>次浏览·<span
+                            th:text="${#calendars.format(qDto.gmtModified,'yyyy-MM-dd HH:mm')}"></span></span>
                 </div>
             </div>
         </div>
