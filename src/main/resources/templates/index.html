@@ -73,8 +73,8 @@
                 <div class="media-body">
                     <h4 class="media-heading" th:text="${qDto.title}"></h4>
                     <span th:text="${qDto.description}"></span><br/>
-                    <span class="text-desc"><span th:text="${qDto.commentCount}"></span>个回复·<span
-                            th:text="${qDto.viewCount}"></span>次浏览·<span
+                    <span class="text-desc"><span th:text="${qDto.commentCount}"></span>个回复 · <span
+                            th:text="${qDto.viewCount}"></span>次浏览 · <span
                             th:text="${#calendars.format(qDto.gmtModified,'yyyy-MM-dd HH:mm')}"></span></span>
                 </div>
             </div>

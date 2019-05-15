@@ -47,6 +47,9 @@ public class IndexController {
         // 获取数据库中已发布问题的list
         List<QuestionDto> questionDtos = questionService.list();
         model.addAttribute("questionDtos", questionDtos);
+
+
+
         // 设置登录跳转地址中的常量
         model.addAttribute("clientId", environment.getProperty("github.client.id"));
         model.addAttribute("redirectUri", environment.getProperty("github.redirect.uri"));
