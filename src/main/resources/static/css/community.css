@@ -4,7 +4,7 @@ body {
 
 .main {
     background-color: white;
-    margin: 30px;
+    margin: 30px 30px 5px 30px;
 }
 
 .btn-publish {
@@ -16,8 +16,14 @@ body {
     witdh: 38px;
     height: 38px;
 }
-.text-desc{
+
+.text-desc {
     font-size: 12px;
     font-weight: normal;
     color: #999;
+}
+
+.pagination {
+    float: right;
+    margin-right: 15px;
 }

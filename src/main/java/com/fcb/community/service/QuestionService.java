@@ -1,5 +1,6 @@
 package com.fcb.community.service;
 
+import com.fcb.community.dto.PaginationDto;
 import com.fcb.community.dto.QuestionDto;
 import com.fcb.community.mapper.QuestionMapper;
 import com.fcb.community.mapper.UserMapper;
@@ -24,9 +25,19 @@ public class QuestionService {
     private UserMapper userMapper;
 
 
-    public List<QuestionDto> list() {
+    public PaginationDto list(Integer currentPage, Integer size) {
 
-        List<Question> questions = questionMapper.list();
+        PaginationDto paginationDto = new PaginationDto();
+        Integer totalCount = questionMapper.count();
+        paginationDto.setPagination(totalCount, currentPage, size);
+        // 对currentPage做范围约束
+        if (currentPage < 1 || currentPage > paginationDto.getTotalPage()) {
+            currentPage = paginationDto.getCurrentPage();
+        }
+
+        //offset=size*(currentPage-1)
+        Integer offset = size * (currentPage - 1);
+        List<Question> questions = questionMapper.list(offset, size);
         List<QuestionDto> questionDtos = new ArrayList<>();
 
         if (questions != null && questions.size() != 0)
@@ -38,6 +49,7 @@ public class QuestionService {
                 questionDto.setUser(user);
                 questionDtos.add(questionDto);
             }
-        return questionDtos;
+        paginationDto.setQuestionDtos(questionDtos);
+        return paginationDto;
     }
 }
