@@ -23,20 +23,17 @@ public class PaginationDto {
     // 按照size分的总共页数
     private Integer totalPage;
 
+    /**
+     * 设置分页参数
+     *
+     * @param totalPage：数据库表中一共有的数量
+     * @param currentPage：当前显示的是第几页
+     * @param size：每页显示的数量
+     */
+    public void setPagination(Integer totalPage, Integer currentPage) {
+        // 将传进来的totalPage更新
+        this.totalPage = totalPage;
 
-    public void setPagination(Integer totalCount, Integer currentPage, Integer size) {
-        // 确定总共页数
-        if (totalCount % size == 0) {
-            totalPage = totalCount / size;
-        } else {
-            totalPage = totalCount / size + 1;
-        }
-
-        // 对currentPage做范围约束
-        if (currentPage < 1)
-            currentPage = 1;
-        if (currentPage > totalPage)
-            currentPage = totalPage;
         // 更新currentPage
         this.currentPage = currentPage;
 
@@ -49,7 +46,7 @@ public class PaginationDto {
                 showPages.add(0, currentPage - i);
             }
 
-            if (currentPage + i <= totalPage) {
+            if (currentPage + i <= this.totalPage) {
                 showPages.add(currentPage + i);
             }
         }
@@ -58,13 +55,13 @@ public class PaginationDto {
         if (currentPage != 1)
             showPrevious = true;
         // 是否显示下一页按钮
-        if (currentPage != totalPage)
+        if (currentPage != this.totalPage)
             showNext = true;
         // 是否显示第一页按钮
         if (!showPages.contains(1))
             showFirstPage = true;
         // 是否显示最后一页按钮
-        if (!showPages.contains(totalPage))
+        if (!showPages.contains(this.totalPage))
             showEndPage = true;
 
     }

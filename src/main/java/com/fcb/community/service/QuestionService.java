@@ -28,16 +28,73 @@ public class QuestionService {
     public PaginationDto list(Integer currentPage, Integer size) {
 
         PaginationDto paginationDto = new PaginationDto();
+
+        // 按照size分的总共页数
+        Integer totalPage;
+
         Integer totalCount = questionMapper.count();
-        paginationDto.setPagination(totalCount, currentPage, size);
-        // 对currentPage做范围约束
-        if (currentPage < 1 || currentPage > paginationDto.getTotalPage()) {
-            currentPage = paginationDto.getCurrentPage();
+        // 确定总共页数
+        if (totalCount % size == 0) {
+            totalPage = totalCount / size;
+        } else {
+            totalPage = totalCount / size + 1;
         }
 
+
+        // 对currentPage做范围约束
+        if (currentPage < 1)
+            currentPage = 1;
+
+        if (currentPage > totalPage)
+            currentPage = totalPage;
+
+        paginationDto.setPagination(totalPage, currentPage);
         //offset=size*(currentPage-1)
         Integer offset = size * (currentPage - 1);
         List<Question> questions = questionMapper.list(offset, size);
+        List<QuestionDto> questionDtos = new ArrayList<>();
+
+        if (questions != null && questions.size() != 0)
+            for (Question question : questions) {
+                User user = userMapper.findById(question.getCreator());
+                QuestionDto questionDto = new QuestionDto();
+                // 将question对象复制到questionDto对象中
+                BeanUtils.copyProperties(question, questionDto);
+                questionDto.setUser(user);
+                questionDtos.add(questionDto);
+            }
+        paginationDto.setQuestionDtos(questionDtos);
+        return paginationDto;
+    }
+
+    public PaginationDto list(Integer userId, Integer currentPage, Integer size) {
+        PaginationDto paginationDto = new PaginationDto();
+
+        // 按照size分的总共页数
+        Integer totalPage;
+
+        Integer totalCount = questionMapper.countUserByUserId(userId);
+        // 确定总共页数
+        if (totalCount % size == 0) {
+            totalPage = totalCount / size;
+        } else {
+            totalPage = totalCount / size + 1;
+        }
+
+
+        // 对currentPage做范围约束
+        if (currentPage < 1)
+            currentPage = 1;
+
+        if (currentPage > totalPage)
+            currentPage = totalPage;
+
+
+        paginationDto.setPagination(totalPage, currentPage);
+
+        //offset=size*(currentPage-1)
+        Integer offset = size * (currentPage - 1);
+        List<Question> questions = questionMapper.listByUserId(userId, offset, size);
         List<QuestionDto> questionDtos = new ArrayList<>();
 
         if (questions != null && questions.size() != 0)
