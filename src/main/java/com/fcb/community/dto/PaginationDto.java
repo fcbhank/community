@@ -28,7 +28,6 @@ public class PaginationDto {
      *
      * @param totalPage：数据库表中一共有的数量
      * @param currentPage：当前显示的是第几页
-     * @param size：每页显示的数量
      */
     public void setPagination(Integer totalPage, Integer currentPage) {
         // 将传进来的totalPage更新

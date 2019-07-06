@@ -31,4 +31,8 @@ public interface QuestionMapper {
     //获取某一用户对应问题的总数
     @Select("select count(1) from question where creator=#{userId} ")
     Integer countUserByUserId(@Param(value = "userId") Integer userId);
+
+    // 根据问题的id查找
+    @Select("select * from question where id=#{id}")
+    Question findById(@Param(value = "id") Integer id);
 }
