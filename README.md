@@ -67,7 +67,7 @@ create table QUESTION
 
 ```bash
 mvn flyway:migrate
-mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate个人资料分布问题列表实现
 ```
 
 
