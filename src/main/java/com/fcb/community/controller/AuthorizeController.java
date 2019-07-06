@@ -2,9 +2,9 @@ package com.fcb.community.controller;
 
 import com.fcb.community.dto.AccessTokenDto;
 import com.fcb.community.dto.GithubUserDto;
-import com.fcb.community.mapper.UserMapper;
 import com.fcb.community.model.User;
 import com.fcb.community.provider.GithubProvider;
+import com.fcb.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
@@ -23,6 +24,9 @@ public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider;
 
+    @Autowired
+    private UserService userService;
+
     @Value("${github.client.id}")
     private String clientId;
 
@@ -32,8 +36,6 @@ public class AuthorizeController {
     @Value("${github.redirect.uri}")
     private String redirectUri;
 
-    @Autowired
-    private UserMapper userMapper;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
@@ -60,7 +62,7 @@ public class AuthorizeController {
             user.setAvatarUrl(githubUserDto.getAvatarUrl());
             user.setBio(githubUserDto.getBio());
 
-            userMapper.insert(user);
+            userService.insertOrUpdate(user);
             // 手动把token写入cookie中
             response.addCookie(new Cookie("token", token));
             return "redirect:/";
@@ -68,5 +70,28 @@ public class AuthorizeController {
             // 登录失败
             return "redirect:/";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response) {
+        if (request.getSession().getAttribute("user") != null)
+            // 清除session
+            request.getSession().removeAttribute("user");
+
+        // 清除所有cookies
+        /*Cookie[] cookies = request.getCookies();
+        if (cookies.length != 0)
+            for (Cookie cookie : cookies) {
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
+        */
+
+        // 清除名为token的cookie
+        Cookie token = new Cookie("token", null);
+        token.setMaxAge(0);
+        response.addCookie(token);
+        return "redirect:/";
     }
 }
