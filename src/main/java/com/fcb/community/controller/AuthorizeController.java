@@ -57,12 +57,10 @@ public class AuthorizeController {
             user.setToken(token);
             user.setAccountId(String.valueOf(githubUserDto.getId()));
             user.setName(githubUserDto.getName());
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUserDto.getAvatarUrl());
             user.setBio(githubUserDto.getBio());
 
-            userService.insertOrUpdate(user);
+            userService.createOrUpdate(user);
             // 手动把token写入cookie中
             response.addCookie(new Cookie("token", token));
             return "redirect:/";

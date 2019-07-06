@@ -13,7 +13,7 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public void insertOrUpdate(User user) {
+    public void createOrUpdate(User user) {
         User dbUser = userMapper.findByAccountId(user.getAccountId());
         if (dbUser != null) {
             //更新
@@ -25,6 +25,8 @@ public class UserService {
             userMapper.update(dbUser);
         } else {
             // 插入
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
             userMapper.insert(user);
         }
     }
