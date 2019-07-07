@@ -5,7 +5,9 @@ import com.fcb.community.dto.QuestionDto;
 import com.fcb.community.mapper.QuestionMapper;
 import com.fcb.community.mapper.UserMapper;
 import com.fcb.community.model.Question;
+import com.fcb.community.model.QuestionExample;
 import com.fcb.community.model.User;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,7 @@ public class QuestionService {
         // 按照size分的总共页数
         Integer totalPage;
 
-        Integer totalCount = questionMapper.count();
+        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         // 确定总共页数
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
@@ -51,12 +53,12 @@ public class QuestionService {
         paginationDto.setPagination(totalPage, currentPage);
         //offset=size*(currentPage-1)
         Integer offset = size * (currentPage - 1);
-        List<Question> questions = questionMapper.list(offset, size);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
         List<QuestionDto> questionDtos = new ArrayList<>();
 
         if (questions != null && questions.size() != 0)
             for (Question question : questions) {
-                User user = userMapper.findById(question.getCreator());
+                User user = userMapper.selectByPrimaryKey(question.getCreator());
                 QuestionDto questionDto = new QuestionDto();
                 // 将question对象复制到questionDto对象中
                 BeanUtils.copyProperties(question, questionDto);
@@ -73,7 +75,10 @@ public class QuestionService {
         // 按照size分的总共页数
         Integer totalPage;
 
-        Integer totalCount = questionMapper.countUserByUserId(userId);
+        QuestionExample example = new QuestionExample();
+        example.createCriteria().
+                andCreatorEqualTo(userId);
+        Integer totalCount = (int) questionMapper.countByExample(example);
         // 确定总共页数
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
@@ -94,12 +99,15 @@ public class QuestionService {
 
         //offset=size*(currentPage-1)
         Integer offset = size * (currentPage - 1);
-        List<Question> questions = questionMapper.listByUserId(userId, offset, size);
+        QuestionExample userIdExample = new QuestionExample();
+        userIdExample.createCriteria().
+                andCreatorEqualTo(userId);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(userIdExample, new RowBounds(offset, size));
         List<QuestionDto> questionDtos = new ArrayList<>();
 
         if (questions != null && questions.size() != 0)
             for (Question question : questions) {
-                User user = userMapper.findById(question.getCreator());
+                User user = userMapper.selectByPrimaryKey(question.getCreator());
                 QuestionDto questionDto = new QuestionDto();
                 // 将question对象复制到questionDto对象中
                 BeanUtils.copyProperties(question, questionDto);
@@ -111,28 +119,31 @@ public class QuestionService {
     }
 
     public QuestionDto findById(Integer id) {
-        Question question = questionMapper.findById(id);
+        Question question = questionMapper.selectByPrimaryKey(id);
         QuestionDto questionDto = new QuestionDto();
         BeanUtils.copyProperties(question, questionDto);
-        questionDto.setUser(userMapper.findById(question.getCreator()));
+        questionDto.setUser(userMapper.selectByPrimaryKey(question.getCreator()));
         return questionDto;
     }
 
     public void createOrUpdate(Question question) {
         if (question.getId() != null) {
             // 更新问题
-            Question dbQuestion = questionMapper.findById(question.getId());
-            dbQuestion.setTitle(question.getTitle());
-            dbQuestion.setDescription(question.getDescription());
-            dbQuestion.setTag(question.getTag());
-            dbQuestion.setGmtModified(System.currentTimeMillis());
-            questionMapper.update(dbQuestion);
+            Question updateQuestion = questionMapper.selectByPrimaryKey(question.getId());
+            updateQuestion.setTitle(question.getTitle());
+            updateQuestion.setDescription(question.getDescription());
+            updateQuestion.setTag(question.getTag());
+            updateQuestion.setGmtModified(System.currentTimeMillis());
+            QuestionExample example = new QuestionExample();
+            example.createCriteria().
+                    andIdEqualTo(question.getId());
+            questionMapper.updateByExampleSelective(updateQuestion, example);
 
         } else {
             // 插入问题
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
-            questionMapper.create(question);
+            questionMapper.insert(question);
         }
     }
 }
