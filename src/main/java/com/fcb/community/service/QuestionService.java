@@ -2,6 +2,8 @@ package com.fcb.community.service;
 
 import com.fcb.community.dto.PaginationDto;
 import com.fcb.community.dto.QuestionDto;
+import com.fcb.community.exception.CustomizeErrorCode;
+import com.fcb.community.exception.CustomizeException;
 import com.fcb.community.mapper.QuestionMapper;
 import com.fcb.community.mapper.UserMapper;
 import com.fcb.community.model.Question;
@@ -120,6 +122,9 @@ public class QuestionService {
 
     public QuestionDto findById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDto questionDto = new QuestionDto();
         BeanUtils.copyProperties(question, questionDto);
         questionDto.setUser(userMapper.selectByPrimaryKey(question.getCreator()));
@@ -137,7 +142,11 @@ public class QuestionService {
             QuestionExample example = new QuestionExample();
             example.createCriteria().
                     andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(updateQuestion, example);
+            int updated = questionMapper.updateByExampleSelective(updateQuestion, example);
+            if (updated != 1) {
+                //更新失败了
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
 
         } else {
             // 插入问题
