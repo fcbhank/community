@@ -1,6 +1,6 @@
 package com.fcb.community.controller;
 
-import com.fcb.community.dto.QuestionDto;
+import com.fcb.community.dto.QuestionDTO;
 import com.fcb.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,9 +19,9 @@ public class QuestionController {
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name = "id") Integer id,
                            Model model) {
-        QuestionDto questionDto = questionService.findById(id);
+        QuestionDTO questionDTO = questionService.findById(id);
         questionService.incViewCount(id);
-        model.addAttribute("question", questionDto);
+        model.addAttribute("question", questionDTO);
         return "question";
     }
 }

@@ -1,7 +1,7 @@
 package com.fcb.community.controller;
 
-import com.fcb.community.dto.AccessTokenDto;
-import com.fcb.community.dto.GithubUserDto;
+import com.fcb.community.dto.AccessTokenDTO;
+import com.fcb.community.dto.GithubUserDTO;
 import com.fcb.community.model.User;
 import com.fcb.community.provider.GithubProvider;
 import com.fcb.community.service.UserService;
@@ -41,15 +41,15 @@ public class AuthorizeController {
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
                            HttpServletResponse response) {
-        AccessTokenDto accessTokenDto = new AccessTokenDto();
-        accessTokenDto.setClient_id(clientId);
-        accessTokenDto.setClient_secret(clientSecret);
-        accessTokenDto.setRedirect_uri(redirectUri);
-        accessTokenDto.setCode(code);
-        accessTokenDto.setState(state);
+        AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
+        accessTokenDTO.setClient_id(clientId);
+        accessTokenDTO.setClient_secret(clientSecret);
+        accessTokenDTO.setRedirect_uri(redirectUri);
+        accessTokenDTO.setCode(code);
+        accessTokenDTO.setState(state);
 
-        String accessToken = githubProvider.getAccessToken(accessTokenDto);
-        GithubUserDto githubUserDto = githubProvider.getUser(accessToken);
+        String accessToken = githubProvider.getAccessToken(accessTokenDTO);
+        GithubUserDTO githubUserDto = githubProvider.getUser(accessToken);
 
         if (githubUserDto != null) {
             User user = new User();

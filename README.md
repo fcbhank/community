@@ -12,7 +12,7 @@
 [Thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)  
 [Mybatis](http://www.mybatis.org/mybatis-3/configuration.html)
 [Spring Dev Tool](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#using-boot-devtools)  
-[Spring MVC](https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#mvc-handlermapping-interceptor)  
+[Spring MVC](https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#mvc-handlermapping-interceptor)    
 [Markdown 插件](http://editor.md.ipandao.com/)  
 [UFfile SDK](https://github.com/ucloud/ufile-sdk-java)  
 [Count(*) VS Count(1)](https://mp.weixin.qq.com/s/Rwpke4BHu7Fz7KOpE2d3Lw)  
@@ -26,7 +26,8 @@
 [ctotree](https://www.octotree.io/)  
 [Table of content sidebar](https://chrome.google.com/webstore/detail/table-of-contents-sidebar/ohohkfheangmbedkgechjkmbepeikkej)  
 [One Tab](https://chrome.google.com/webstore/detail/chphlpgkkbolifaimnlloiipkdnihall)  
-[Live Reload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei/related)  
+[Live Reload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei/related)
+[json在线解析工具](https://jsoneditoronline.org/)  
 [Postman](https://chrome.google.com/webstore/detail/coohjcphdfgbiolnekdpbcijmhambjff)  
 
 
@@ -66,8 +67,10 @@ create table QUESTION
 ```
 
 ```bash
+数据库结构版本控制
 mvn flyway:migrate
-mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate个人资料分布问题列表实现
+使用MGB生成mapper、xml和model
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 ```
 
 

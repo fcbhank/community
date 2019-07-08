@@ -1,8 +1,8 @@
 package com.fcb.community.provider;
 
 import com.alibaba.fastjson.JSON;
-import com.fcb.community.dto.AccessTokenDto;
-import com.fcb.community.dto.GithubUserDto;
+import com.fcb.community.dto.AccessTokenDTO;
+import com.fcb.community.dto.GithubUserDTO;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +13,10 @@ import java.io.IOException;
  */
 @Component
 public class GithubProvider {
-    public String getAccessToken(AccessTokenDto accessTokenDto) {
+    public String getAccessToken(AccessTokenDTO accessTokenDTO) {
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
-        RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDto));
+        RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
                 .post(body)
@@ -31,7 +31,7 @@ public class GithubProvider {
         return null;
     }
 
-    public GithubUserDto getUser(String accessToken) {
+    public GithubUserDTO getUser(String accessToken) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("https://api.github.com/user?access_token=" + accessToken)
@@ -39,7 +39,7 @@ public class GithubProvider {
         try {
             Response response = client.newCall(request).execute();
             String string = response.body().string();
-            GithubUserDto githubUserDto = JSON.parseObject(string, GithubUserDto.class);
+            GithubUserDTO githubUserDto = JSON.parseObject(string, GithubUserDTO.class);
             return githubUserDto;
         } catch (IOException e) {
             e.printStackTrace();

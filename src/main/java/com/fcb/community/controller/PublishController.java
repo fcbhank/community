@@ -1,8 +1,6 @@
 package com.fcb.community.controller;
 
-import com.fcb.community.dto.QuestionDto;
-import com.fcb.community.mapper.QuestionMapper;
-import com.fcb.community.mapper.UserMapper;
+import com.fcb.community.dto.QuestionDTO;
 import com.fcb.community.model.Question;
 import com.fcb.community.model.User;
 import com.fcb.community.service.QuestionService;
@@ -78,7 +76,7 @@ public class PublishController {
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable(name = "id") Integer id,
                        Model model) {
-        QuestionDto question = questionService.findById(id);
+        QuestionDTO question = questionService.findById(id);
         model.addAttribute("title", question.getTitle());
         model.addAttribute("description", question.getDescription());
         model.addAttribute("tag", question.getTag());

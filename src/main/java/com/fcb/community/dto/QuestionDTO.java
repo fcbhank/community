@@ -7,7 +7,7 @@ import lombok.Data;
  * Created by hank on 19-5-8
  */
 @Data
-public class QuestionDto {
+public class QuestionDTO {
     private Integer id;
     private String title;
     private String description;

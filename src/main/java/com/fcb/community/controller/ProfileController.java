@@ -1,6 +1,6 @@
 package com.fcb.community.controller;
 
-import com.fcb.community.dto.PaginationDto;
+import com.fcb.community.dto.PaginationDTO;
 import com.fcb.community.mapper.UserMapper;
 import com.fcb.community.model.User;
 import com.fcb.community.service.QuestionService;
@@ -42,8 +42,8 @@ public class ProfileController {
             model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
         }
-        PaginationDto paginationDto = questionService.list(user.getId(), currentPage, size);
-        model.addAttribute("pagination", paginationDto);
+        PaginationDTO paginationDTO = questionService.list(user.getId(), currentPage, size);
+        model.addAttribute("pagination", paginationDTO);
         return "profile";
     }
 }

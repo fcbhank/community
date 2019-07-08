@@ -1,6 +1,6 @@
 package com.fcb.community.controller;
 
-import com.fcb.community.dto.PaginationDto;
+import com.fcb.community.dto.PaginationDTO;
 import com.fcb.community.mapper.UserMapper;
 import com.fcb.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,8 @@ public class IndexController {
                         @RequestParam(value = "size", defaultValue = "5") Integer size) {
 
         // 获取数据库中已发布问题的list，并分页显示
-        PaginationDto paginationDto = questionService.list(currentPage, size);
-        model.addAttribute("pagination", paginationDto);
+        PaginationDTO paginationDTO = questionService.list(currentPage, size);
+        model.addAttribute("pagination", paginationDTO);
 
 
         // 设置登录跳转地址中的常量

@@ -1,7 +1,7 @@
 package com.fcb.community.service;
 
-import com.fcb.community.dto.PaginationDto;
-import com.fcb.community.dto.QuestionDto;
+import com.fcb.community.dto.PaginationDTO;
+import com.fcb.community.dto.QuestionDTO;
 import com.fcb.community.exception.CustomizeErrorCode;
 import com.fcb.community.exception.CustomizeException;
 import com.fcb.community.mapper.QuestionExtMapper;
@@ -32,9 +32,9 @@ public class QuestionService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
-    public PaginationDto list(Integer currentPage, Integer size) {
+    public PaginationDTO list(Integer currentPage, Integer size) {
 
-        PaginationDto paginationDto = new PaginationDto();
+        PaginationDTO paginationDTO = new PaginationDTO();
 
         // 按照size分的总共页数
         Integer totalPage;
@@ -55,27 +55,27 @@ public class QuestionService {
         if (currentPage > totalPage)
             currentPage = totalPage;
 
-        paginationDto.setPagination(totalPage, currentPage);
+        paginationDTO.setPagination(totalPage, currentPage);
         //offset=size*(currentPage-1)
         Integer offset = size * (currentPage - 1);
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
-        List<QuestionDto> questionDtos = new ArrayList<>();
+        List<QuestionDTO> questionDTOs = new ArrayList<>();
 
         if (questions != null && questions.size() != 0)
             for (Question question : questions) {
                 User user = userMapper.selectByPrimaryKey(question.getCreator());
-                QuestionDto questionDto = new QuestionDto();
-                // 将question对象复制到questionDto对象中
-                BeanUtils.copyProperties(question, questionDto);
-                questionDto.setUser(user);
-                questionDtos.add(questionDto);
+                QuestionDTO questionDTO = new QuestionDTO();
+                // 将question对象复制到questionDTO对象中
+                BeanUtils.copyProperties(question, questionDTO);
+                questionDTO.setUser(user);
+                questionDTOs.add(questionDTO);
             }
-        paginationDto.setQuestionDtos(questionDtos);
-        return paginationDto;
+        paginationDTO.setQuestionDTOs(questionDTOs);
+        return paginationDTO;
     }
 
-    public PaginationDto list(Integer userId, Integer currentPage, Integer size) {
-        PaginationDto paginationDto = new PaginationDto();
+    public PaginationDTO list(Integer userId, Integer currentPage, Integer size) {
+        PaginationDTO paginationDTO = new PaginationDTO();
 
         // 按照size分的总共页数
         Integer totalPage;
@@ -100,7 +100,7 @@ public class QuestionService {
             currentPage = totalPage;
 
 
-        paginationDto.setPagination(totalPage, currentPage);
+        paginationDTO.setPagination(totalPage, currentPage);
 
         //offset=size*(currentPage-1)
         Integer offset = size * (currentPage - 1);
@@ -108,30 +108,30 @@ public class QuestionService {
         userIdExample.createCriteria().
                 andCreatorEqualTo(userId);
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(userIdExample, new RowBounds(offset, size));
-        List<QuestionDto> questionDtos = new ArrayList<>();
+        List<QuestionDTO> questionDTOs = new ArrayList<>();
 
         if (questions != null && questions.size() != 0)
             for (Question question : questions) {
                 User user = userMapper.selectByPrimaryKey(question.getCreator());
-                QuestionDto questionDto = new QuestionDto();
-                // 将question对象复制到questionDto对象中
-                BeanUtils.copyProperties(question, questionDto);
-                questionDto.setUser(user);
-                questionDtos.add(questionDto);
+                QuestionDTO questionDTO = new QuestionDTO();
+                // 将question对象复制到questionDTO对象中
+                BeanUtils.copyProperties(question, questionDTO);
+                questionDTO.setUser(user);
+                questionDTOs.add(questionDTO);
             }
-        paginationDto.setQuestionDtos(questionDtos);
-        return paginationDto;
+        paginationDTO.setQuestionDTOs(questionDTOs);
+        return paginationDTO;
     }
 
-    public QuestionDto findById(Integer id) {
+    public QuestionDTO findById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
-        QuestionDto questionDto = new QuestionDto();
-        BeanUtils.copyProperties(question, questionDto);
-        questionDto.setUser(userMapper.selectByPrimaryKey(question.getCreator()));
-        return questionDto;
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question, questionDTO);
+        questionDTO.setUser(userMapper.selectByPrimaryKey(question.getCreator()));
+        return questionDTO;
     }
 
     public void createOrUpdate(Question question) {
