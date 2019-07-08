@@ -4,6 +4,7 @@ import com.fcb.community.dto.PaginationDto;
 import com.fcb.community.dto.QuestionDto;
 import com.fcb.community.exception.CustomizeErrorCode;
 import com.fcb.community.exception.CustomizeException;
+import com.fcb.community.mapper.QuestionExtMapper;
 import com.fcb.community.mapper.QuestionMapper;
 import com.fcb.community.mapper.UserMapper;
 import com.fcb.community.model.Question;
@@ -28,6 +29,8 @@ public class QuestionService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PaginationDto list(Integer currentPage, Integer size) {
 
@@ -154,5 +157,13 @@ public class QuestionService {
             question.setGmtModified(question.getGmtCreate());
             questionMapper.insert(question);
         }
+    }
+
+    public void incViewCount(Integer id) {
+        // 增加阅读数
+        Question updateQuestion = new Question();
+        updateQuestion.setId(id);
+        updateQuestion.setViewCount(1);
+        questionExtMapper.incViewCount(updateQuestion);
     }
 }
