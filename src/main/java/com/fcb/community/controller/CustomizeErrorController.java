@@ -26,9 +26,9 @@ public class CustomizeErrorController implements ErrorController {
     public ModelAndView errorHtml(HttpServletRequest request, Model model) {
         HttpStatus status = getStatus(request);
         if (status.is4xxClientError()) {
-            model.addAttribute("errorTip", "你的请求有问题，换个试试？");
+            model.addAttribute("tip", "你的请求有问题，换个试试？");
         } else if (status.is5xxServerError()) {
-            model.addAttribute("errorTip", "服务器跑丢了，攻城狮正在紧急修复中……");
+            model.addAttribute("tip", "服务器跑丢了，攻城狮正在紧急修复中……");
         }
         return new ModelAndView("error");
     }

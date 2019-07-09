@@ -4,13 +4,20 @@ package com.fcb.community.exception;
  * Created by hank on 7/7/19
  */
 public class CustomizeException extends RuntimeException {
-    private String errorTip;
+    private Integer code;
+    private String tip;
 
-    public CustomizeException(ICustomizeErrorCode code) {
-        this.errorTip = code.getErrorTip();
+    public CustomizeException(CustomizeErrorCode errorCode) {
+        this.code = errorCode.getCode();
+        this.tip = errorCode.getTip();
     }
 
-    public String getErrorTip() {
-        return errorTip;
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getTip() {
+        return tip;
     }
 }

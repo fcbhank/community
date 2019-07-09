@@ -35,7 +35,7 @@ public class PublishController {
             @RequestParam(value = "title") String title,
             @RequestParam(value = "description") String description,
             @RequestParam(value = "tag") String tag,
-            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "id", required = false) Long id,
             HttpServletRequest request,
             Model model) {
         // 页面出现错误时，原来填写的东西回显
@@ -68,13 +68,16 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(tag);
         question.setCreator(user.getId());
-
+        question.setViewCount(0);
+        question.setCommentCount(0);
+        question.setLikeCount(0);
+        
         questionService.createOrUpdate(question);
         return "redirect:/";// 刷新页面，重新展示内容
     }
 
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name = "id") Integer id,
+    public String edit(@PathVariable(name = "id") Long id,
                        Model model) {
         QuestionDTO question = questionService.findById(id);
         model.addAttribute("title", question.getTitle());

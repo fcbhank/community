@@ -74,7 +74,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO list(Integer userId, Integer currentPage, Integer size) {
+    public PaginationDTO list(Long userId, Integer currentPage, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
 
         // 按照size分的总共页数
@@ -123,7 +123,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public QuestionDTO findById(Integer id) {
+    public QuestionDTO findById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
@@ -159,7 +159,7 @@ public class QuestionService {
         }
     }
 
-    public void incViewCount(Integer id) {
+    public void incViewCount(Long id) {
         // 增加阅读数
         Question updateQuestion = new Question();
         updateQuestion.setId(id);
