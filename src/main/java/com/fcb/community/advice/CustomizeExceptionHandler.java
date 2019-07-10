@@ -28,20 +28,23 @@ public class CustomizeExceptionHandler {
         String contentType = request.getContentType();
         if ("application/json".equals(contentType)) {
             // 请求的是json，返回json
+            ResultDTO resultDTO;
             if (e instanceof CustomizeException) {
-                ResultDTO resultDTO = new ResultDTO();
-                resultDTO.setTip(((CustomizeException) e).getTip());
-                resultDTO.setCode(((CustomizeException) e).getCode());
+                resultDTO = ResultDTO.errof((CustomizeException) e);
                 response.setStatus(resultDTO.getCode());
-                response.setContentType("application/json");
-                response.setCharacterEncoding("utf-8");
-                try {
-                    PrintWriter writer = response.getWriter();
-                    writer.write(JSON.toJSONString(resultDTO));
-                    writer.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+            } else {
+                // 其他非自定义异常
+                resultDTO = ResultDTO.errof(CustomizeErrorCode.SYS_ERROR);
+                response.setStatus(CustomizeErrorCode.SYS_ERROR.getCode());
+            }
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            try {
+                PrintWriter writer = response.getWriter();
+                writer.write(JSON.toJSONString(resultDTO));
+                writer.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
             return null;
         } else {
