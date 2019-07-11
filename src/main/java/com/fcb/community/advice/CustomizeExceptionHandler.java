@@ -31,12 +31,12 @@ public class CustomizeExceptionHandler {
             ResultDTO resultDTO;
             if (e instanceof CustomizeException) {
                 resultDTO = ResultDTO.errof((CustomizeException) e);
-                response.setStatus(resultDTO.getCode());
             } else {
                 // 其他非自定义异常
                 resultDTO = ResultDTO.errof(CustomizeErrorCode.SYS_ERROR);
-                response.setStatus(CustomizeErrorCode.SYS_ERROR.getCode());
             }
+            //此处写200，后期ajax返回统一进入success处理
+            response.setStatus(200);
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             try {
