@@ -1,7 +1,6 @@
 package com.fcb.community.controller;
 
 import com.fcb.community.dto.PaginationDTO;
-import com.fcb.community.mapper.UserMapper;
 import com.fcb.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

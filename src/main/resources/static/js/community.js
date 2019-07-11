@@ -15,6 +15,12 @@ function post() {
         success: function (response) {
             if (response.code == 200) {
                 $("#comment_id").hide();
+            } else if (response.code == 2003) {
+                var isAccepted = confirm(response.tip);
+                if (isAccepted == true) {
+                    window.open("https://github.com/login/oauth/authorize?client_id=325b2ee6c4c797aa87c6&redirect_uri=http://localhost:8887/callback&scope=user&state=1");
+                    window.localStorage.setItem("closeable", "true");
+                }
             } else {
                 alert(response.tip);
             }
