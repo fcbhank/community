@@ -1,5 +1,7 @@
 package com.fcb.community.model;
 
+import com.fcb.community.enums.CommentTypeEnum;
+
 import java.util.ArrayList;
 import java.util.List;
 

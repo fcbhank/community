@@ -23,9 +23,10 @@
 
 <div class="container-fluid main profile">
     <div class="row">
-        <!--左侧内容-->
+
+        <!--左侧内容 开始-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <!--问题部分-->
+            <!--问题部分 开始-->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <!--问题标题-->
                 <h4><span th:text="${question.title}"></span></h4>
@@ -46,13 +47,51 @@
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                         编辑
                     </a>
-                    <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12"/>
                 </div>
-
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             </div>
+            <!--问题部分 结束-->
 
-            <!--评论部分-->
+            <!--已有评论列表展示 开始-->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>
+                    <span th:text="${question.commentCount}"></span> 个回复
+                </h4>
+                <!-- 一根分隔线-->
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-sp"/>
+
+                <!--单条评论展示-->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:each="comment : ${comments}">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object img-rounded"
+                                     th:src="${comment.user.avatarUrl}"
+                                     alt="头像">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h5 class="media-heading" th:text="${comment.user.name}"></h5>
+                            <span th:text="${comment.content}"></span>
+                            <div class="menu">
+                                <span class="glyphicon glyphicon-thumbs-up icon"></span>
+                                <span class="glyphicon glyphicon-comment icon"></span>
+                                <span class="pull-right"
+                                      th:text="${#calendars.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
+                            </div>
+
+                        </div>
+                        <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12"/>
+                    </div>
+                </div>
+            </div>
+            <!--已有评论列表展示  结束-->
+
+            <!--评论框新添评论部分 开始-->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_id">
+                <h4>
+                    <span>评论</span>
+                </h4>
                 <!--用户头像与名称组件-->
                 <div class="media" th:if="${session.user!=null}">
                     <div class="media-left">
@@ -62,7 +101,7 @@
                                  alt="头像">
                         </a>
                     </div>
-                    <div class="media-body comment-creator-name">
+                    <div class="media-body user-name">
                         <h5 class="media-heading" th:text="${session.user.name}"></h5>
                     </div>
                 </div>
@@ -73,10 +112,12 @@
                 <button type="button" class="btn btn-success btn-comment" onclick="post()">回复</button>
 
             </div>
+            <!--评论框新添评论部分 开始-->
 
         </div>
+        <!--左侧内容 结束-->
 
-        <!--右侧内容-->
+        <!--右侧内容 开始-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h4>发起人</h4>
@@ -85,12 +126,12 @@
                 <div class="media">
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object img-circle"
+                            <img class="media-object img-rounded"
                                  th:src="${question.user.avatarUrl}"
                                  alt="头像">
                         </a>
                     </div>
-                    <div class="media-body">
+                    <div class="media-body user-name">
                         <h5 class="media-heading" th:text="${question.user.name}"></h5>
                     </div>
                 </div>
@@ -101,10 +142,9 @@
             </div>
 
         </div>
+        <!--右侧内容 结束-->
+
     </div>
-
 </div>
-
-
 </body>
 </html>

@@ -17,7 +17,7 @@ body {
     height: 38px;
 }
 
-.comment-creator-name {
+.user-name {
     padding-top: 10px;
 }
 
@@ -54,4 +54,25 @@ body {
 .btn-comment {
     float: right;
     margin-bottom: 10px;
+}
+
+.comment-sp {
+    margin-top: 0;
+}
+
+.menu {
+    color: #999;
+    margin-top: 5px;
+}
+
+
+.menu .icon {
+    padding: 5px 10px;
+    font-size: 15px;
+    cursor: pointer;
+    background-color: #efefef;
+}
+
+.menu .icon:hover {
+    background-color: #499ef3;
 }
