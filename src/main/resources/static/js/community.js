@@ -1,6 +1,10 @@
 function post() {
     var questionId = $("#question_id").val();
     var content = $("#comment_content").val();
+    if (!content) {
+        alert("回复内容不能为空！");
+        return;
+    }
 
     $.ajax({
         type: "POST",
@@ -14,7 +18,8 @@ function post() {
         dataType: "json",
         success: function (response) {
             if (response.code == 200) {
-                $("#comment_id").hide();
+                // $("#comment_id").hide();
+                window.location.reload();
             } else if (response.code == 2003) {
                 var isAccepted = confirm(response.tip);
                 if (isAccepted == true) {

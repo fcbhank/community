@@ -74,6 +74,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
+    // 我的问题:右上角下拉栏
     public PaginationDTO list(Long userId, Integer currentPage, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
 
