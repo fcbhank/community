@@ -10,6 +10,7 @@ import com.fcb.community.mapper.UserMapper;
 import com.fcb.community.model.Question;
 import com.fcb.community.model.QuestionExample;
 import com.fcb.community.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +58,11 @@ public class QuestionService {
 
         paginationDTO.setPagination(totalPage, currentPage);
         //offset=size*(currentPage-1)
-        Integer offset = size * (currentPage - 1);
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
+        int offset = size * (currentPage - 1);
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.setOrderByClause("gmt_create desc");
+        List<Question> questions = questionMapper
+                .selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
         List<QuestionDTO> questionDTOs = new ArrayList<>();
 
         if (questions != null && questions.size() != 0)
@@ -166,5 +170,22 @@ public class QuestionService {
         updateQuestion.setId(id);
         updateQuestion.setViewCount(1);
         questionExtMapper.incViewCount(updateQuestion);
+    }
+
+    public List<QuestionDTO> listRelatedQuestionByTag(QuestionDTO questionDTO) {
+        // 通过 tag 查找与当前问题相关的问题
+        if (StringUtils.isBlank(questionDTO.getTag())) {
+            return new ArrayList<>();
+        }
+        String tag = questionDTO.getTag();
+        if (tag.contains("，")) {
+            tag = tag.replace("，", ",");
+        }
+        String regexTag = tag.replace(",", "|");
+        Question question = new Question();
+        question.setId(questionDTO.getId());
+        question.setTag(regexTag);
+        List<QuestionDTO> relatedQuestions = questionExtMapper.listRelatedQuestionByTag(question);
+        return relatedQuestions;
     }
 }

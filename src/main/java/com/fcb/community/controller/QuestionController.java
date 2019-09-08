@@ -32,8 +32,11 @@ public class QuestionController {
 
         // 读取所有回复问题的评论
         List<CommentDTO> commentDTOs = commentService.listCommentsByParentId(id, CommentTypeEnum.QUESTION);
+        // 读取相关问题
+        List<QuestionDTO> relatedQuestions = questionService.listRelatedQuestionByTag(questionDTO);
 
         model.addAttribute("comments", commentDTOs);
+        model.addAttribute("relatedQuestions", relatedQuestions);
         return "question";
     }
 }

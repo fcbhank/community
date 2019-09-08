@@ -12,15 +12,28 @@
         <result column="LIKE_COUNT" jdbcType="INTEGER" property="likeCount"/>
         <result column="TAG" jdbcType="VARCHAR" property="tag"/>
     </resultMap>
-
+    <!--增加阅读数-->
     <update id="incViewCount" parameterType="com.fcb.community.model.Question">
         update QUESTION
         set VIEW_COUNT=VIEW_COUNT + #{viewCount,jdbcType=INTEGER}
         where ID = #{id,jdbcType=INTEGER}
     </update>
+
+    <!--增加评论数-->
     <update id="incCommentCount" parameterType="com.fcb.community.model.Question">
         update QUESTION
         set COMMENT_COUNT=COMMENT_COUNT + #{commentCount,jdbcType=INTEGER}
         where ID = #{id,jdbcType=INTEGER}
     </update>
+
+    <!--用 tag 模糊匹配相关问题-->
+    <select id="listRelatedQuestionByTag" parameterType="com.fcb.community.model.Question"
+            resultMap="BaseResultMap">
+        select *
+        from QUESTION
+        where TAG regexp #{tag}
+          and id != #{id}
+    </select>
+
+
 </mapper>
