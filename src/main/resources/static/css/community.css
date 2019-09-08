@@ -76,3 +76,29 @@ body {
 .menu .icon:hover {
     background-color: #499ef3;
 }
+
+.menu .icon span {
+    font-weight: 900;
+}
+
+.media-body .sub-comment {
+    margin-top: 10px;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #f2f2f2;
+    padding: 15px 15px 15px 15px;
+}
+
+.media-body .sub-h5 {
+    display: inline;
+}
+
+.media-body .sub-comment-content {
+    margin-top: 3px;
+}
+
+.sub-comment .btn {
+    margin: 10px 0;
+}
+

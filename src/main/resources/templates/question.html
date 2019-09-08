@@ -15,6 +15,8 @@
     <!-- Bootstrap 核心 JavaScript 文件 -->
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
+    <!--moment.js 格式化时间-->
+    <script src="/js/momeny.js" type="application/javascript"></script>
 
 </head>
 
@@ -75,12 +77,56 @@
                             <span th:text="${comment.content}"></span>
                             <div class="menu">
                                 <span class="glyphicon glyphicon-thumbs-up icon"></span>
-                                <span class="glyphicon glyphicon-comment icon"></span>
+                                <span class="glyphicon glyphicon-comment icon" data-toggle="collapse"
+                                      th:attr="data-target='#'+${comment.id}"
+                                      onclick="show_subComments(this)">
+                                    <span th:text="${comment.commentCount}"></span>
+                                </span>
                                 <span class="pull-right"
                                       th:text="${#calendars.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
                             </div>
+                            <!--下行 id 对应着 data-target 属性-->
+                            <div th:id="${comment.id}"
+                                 class="collapse  sub-comment col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                        </div>
+                                <!--待填充的二级评论内容 开始-->
+                                <!--<div th:each="comment : ${comments}">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="#">
+                                                <img class="media-object img-rounded"
+                                                     th:src="${comment.user.avatarUrl}"
+                                                     alt="头像">
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 class="media-heading sub-h5" th:text="${comment.user.name}"></h5>
+                                            • <span
+                                                th:text="${#calendars.format(comment.gmtCreate,'yyyy-MM-dd hh:mm')}"></span>
+                                            <a class="pull-right">回复</a>
+
+                                            <div class="sub-comment-content">
+                                                <span th:text="${comment.content}"></span>
+                                            </div>
+                                        </div>
+                                        <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12"/>
+                                    </div>
+                                </div>-->
+                                <!--待填充的二级评论内容 结束-->
+
+                                <!--二级评论回复框-->
+                                <div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12 sub-comment">
+                                    <input type="text" class="form-control" placeholder="评论一下..."
+                                           aria-describedby="basic-addon1" th:id="'subComment-'+${comment.id}">
+                                    <button type="button" class="btn btn-success pull-right"
+                                            onclick="postComment(this,2)">
+                                        评论
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div><!-- media-body 结束-->
+
                         <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12"/>
                     </div>
                 </div>
@@ -109,7 +155,7 @@
                 <textarea class="form-control comment" rows="6" id="comment_content"></textarea>
                 <!--回复按钮-->
                 <input type="hidden" id="question_id" th:value="${question.id}">
-                <button type="button" class="btn btn-success btn-comment" onclick="post()">回复</button>
+                <button type="button" class="btn btn-success btn-comment" onclick="postComment(this,1)">回复</button>
 
             </div>
             <!--评论框新添评论部分 开始-->

@@ -4,19 +4,29 @@ import com.fcb.community.exception.CustomizeErrorCode;
 import com.fcb.community.exception.CustomizeException;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Created by hank on 7/9/19
  */
 @Data
-public class ResultDTO {
+public class ResultDTO<T> {
     private Integer code;
     private String tip;
-
+    private T data;
 
     public static ResultDTO okof() {
         ResultDTO result = new ResultDTO();
         result.setCode(200);
         result.setTip("请求成功！");
+        return result;
+    }
+
+    public static <T> ResultDTO okof(T data) {
+        ResultDTO result = new ResultDTO();
+        result.setCode(200);
+        result.setTip("请求成功！");
+        result.setData(data);
         return result;
     }
 

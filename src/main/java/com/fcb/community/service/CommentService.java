@@ -4,10 +4,7 @@ import com.fcb.community.dto.CommentDTO;
 import com.fcb.community.enums.CommentTypeEnum;
 import com.fcb.community.exception.CustomizeErrorCode;
 import com.fcb.community.exception.CustomizeException;
-import com.fcb.community.mapper.CommentMapper;
-import com.fcb.community.mapper.QuestionExtMapper;
-import com.fcb.community.mapper.QuestionMapper;
-import com.fcb.community.mapper.UserMapper;
+import com.fcb.community.mapper.*;
 import com.fcb.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +24,9 @@ import java.util.stream.Collectors;
 public class CommentService {
     @Autowired
     private CommentMapper commentMapper;
+
+    @Autowired
+    private CommentExtMapper commentExtMapper;
 
     @Autowired
     private QuestionMapper questionMapper;
@@ -63,14 +63,17 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            dbComment.setCommentCount(1L);
+            commentExtMapper.incCommentCount(dbComment);
+
         }
     }
 
-    public List<CommentDTO> listCommentsByQuestionId(Long id) {
+    public List<CommentDTO> listCommentsByParentId(Long id, CommentTypeEnum typeEnum) {
         // 获取当前 Question 的所有 comment
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria().andParentIdEqualTo(id)
-                .andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+                .andTypeEqualTo(typeEnum.getType());
         // 倒叙查找
         commentExample.setOrderByClause("GMT_CREATE DESC");
         List<Comment> comments = commentMapper.selectByExample(commentExample);

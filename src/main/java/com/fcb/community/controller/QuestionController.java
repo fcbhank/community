@@ -2,6 +2,7 @@ package com.fcb.community.controller;
 
 import com.fcb.community.dto.CommentDTO;
 import com.fcb.community.dto.QuestionDTO;
+import com.fcb.community.enums.CommentTypeEnum;
 import com.fcb.community.service.CommentService;
 import com.fcb.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ public class QuestionController {
         model.addAttribute("question", questionDTO);
 
         // 读取所有回复问题的评论
-        List<CommentDTO> commentDTOs = commentService.listCommentsByQuestionId(id);
+        List<CommentDTO> commentDTOs = commentService.listCommentsByParentId(id, CommentTypeEnum.QUESTION);
+
         model.addAttribute("comments", commentDTOs);
         return "question";
     }
